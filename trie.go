@@ -1,7 +1,5 @@
 package kana
 
-import "fmt"
-
 type Trie struct {
 	children map[string]*Trie
 	letter   string
@@ -25,20 +23,23 @@ func (t *Trie) insert(letters, value string) {
 
 	// loop through letters in argument word
 	for l, letter := range letters_rune {
+
 		letter_str := string(letter)
+
 		// if letter in children
 		if t.children[letter_str] != nil {
 			t = t.children[letter_str]
-			continue
+		} else {
+			// not found, so add letter to children
+			t.children[letter_str] = &Trie{map[string]*Trie{}, "", []string{}}
+			t = t.children[letter_str]
 		}
+
 		if l == len(letters_rune)-1 {
 			// last letter, save value and exit
 			t.values = append(t.values, value)
 			break
 		}
-		// not found, so add letter to children
-		t.children[letter_str] = &Trie{map[string]*Trie{}, "", []string{}}
-		t = t.children[letter_str]
 	}
 }
 
@@ -73,7 +74,6 @@ func (t *Trie) convert(origin string) (result string) {
 		replacing the longest valid string it can find at any
 		given point.
 	*/
-	fmt.Println("convert")
 	root := t
 	origin_rune := []rune(origin)
 	result = ""
@@ -82,7 +82,7 @@ func (t *Trie) convert(origin string) (result string) {
 		t = root
 		found_value := ""
 		depth := 0
-		for i := 0; ; i++ {
+		for i := 0; i+l < len(origin_rune); i++ {
 			letter := string(origin_rune[l+i])
 			if t.children[letter] == nil {
 				// not found

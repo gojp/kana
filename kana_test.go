@@ -13,8 +13,7 @@ type KanaSuite struct{}
 var _ = Suite(&KanaSuite{})
 
 func (s *KanaSuite) TestHiraganaToRomaji(c *C) {
-	k := new(Kana)
-	k.initialize()
+	k := newKana()
 
 	// some basic checks
 	c.Check(k.kana_to_romaji("ああいうえお"), Equals, "aaiueo")
@@ -23,7 +22,7 @@ func (s *KanaSuite) TestHiraganaToRomaji(c *C) {
 	c.Check(k.kana_to_romaji("はんのう"), Equals, "hannou")
 
 	// check that spacing is preserved
-	c.Check(k.kana_to_romaji("な	に	ぬ	ね	の"), Equals, "na	ni	nu	ne	no")
+	c.Check(k.kana_to_romaji("な\nに	ぬ	ね	の"), Equals, "na\nni	nu	ne	no")
 
 	// check that english text is preserved
 	c.Check(k.kana_to_romaji("ばか dog"), Equals, "baka dog")
@@ -32,9 +31,29 @@ func (s *KanaSuite) TestHiraganaToRomaji(c *C) {
 	// c.Check(k.kana_to_romaji(""), Equals, "beddo")
 }
 
-// func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
-// 	k := new(Kana)
-// 	k.initialize()
-// 	c.Check(k.kana_to_romaji("バナナ"), Equals, "banana")
-// 	c.Check(k.kana_to_romaji("カンジ"), Equals, "kanji")
-// }
+func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
+	k := newKana()
+
+	// basic tests
+	c.Check(k.kana_to_romaji("バナナ"), Equals, "banana")
+	c.Check(k.kana_to_romaji("カンジ"), Equals, "kanji")
+
+	// check that r is preferred
+	c.Check(k.kana_to_romaji("テレビ"), Equals, "terebi")
+
+	// check english + katakana mix
+	c.Check(k.kana_to_romaji("baking バナナ pancakes"), Equals, "baking banana pancakes")
+}
+
+func (s *KanaSuite) TestRomajiToKatakana(c *C) {
+	k := newKana()
+
+	// basic tests
+	c.Check(k.romaji_to_katakana("banana"), Equals, "バナナ")
+	c.Check(k.romaji_to_katakana("rajio"), Equals, "ラジオ")
+
+	// test r/l equality
+	c.Check(k.romaji_to_katakana("terebi"), Equals, "テレビ")
+	c.Check(k.romaji_to_katakana("telebi"), Equals, "テレビ")
+
+}
