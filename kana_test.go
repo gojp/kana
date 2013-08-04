@@ -20,15 +20,13 @@ func (s *KanaSuite) TestHiraganaToRomaji(c *C) {
 	c.Check(k.kana_to_romaji("かんじ"), Equals, "kanji")
 	c.Check(k.kana_to_romaji("ちゃう"), Equals, "chau")
 	c.Check(k.kana_to_romaji("はんのう"), Equals, "hannou")
+	c.Check(k.kana_to_romaji("きょうじゅ"), Equals, "kyouju")
 
 	// check that spacing is preserved
 	c.Check(k.kana_to_romaji("な\nに	ぬ	ね	の"), Equals, "na\nni	nu	ne	no")
 
 	// check that english text is preserved
 	c.Check(k.kana_to_romaji("ばか dog"), Equals, "baka dog")
-
-	// check that double-consonants and long vowels get converted correctly
-	// c.Check(k.kana_to_romaji(""), Equals, "beddo")
 }
 
 func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
@@ -43,6 +41,10 @@ func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
 
 	// check english + katakana mix
 	c.Check(k.kana_to_romaji("baking バナナ pancakes"), Equals, "baking banana pancakes")
+
+	// check that double-consonants and long vowels get converted correctly
+	c.Check(k.kana_to_romaji("ベ投ド"), Equals, "beddo")
+	c.Check(k.kana_to_romaji("バナ一ナ"), Equals, "banaana")
 }
 
 func (s *KanaSuite) TestRomajiToKatakana(c *C) {
