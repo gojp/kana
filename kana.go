@@ -1,7 +1,6 @@
 package kana
 
 import (
-	"fmt"
 	"io/ioutil"
 	"strings"
 )
@@ -62,24 +61,25 @@ func (k Kana) kana_to_romaji(kana string) (romaji string) {
 	romaji = k.kanaToRomajiTrie.convert(kana)
 
 	// do some post-processing for the tsu and stripe characters
+	// maybe a bit of a hacky solution - how can we improve?
 	// (they act more like punctuation)
-	tsu := "投"
-	for i := strings.Index(romaji, tsu); i > -1; i = strings.Index(romaji, tsu) {
-		rune_romaji := []rune(romaji)
-		fmt.Println(rune_romaji)
-		if len(rune_romaji) > i+2 {
-			// TODO: should check if following letter is consonant
-			followingLetter := string(rune_romaji[i+1 : i+2])
-			romaji = strings.Replace(romaji, tsu, followingLetter, 1)
-		} else {
-			romaji = strings.Replace(romaji, tsu, "", 1)
+	tsus := []string{"っ", "ッ"}
+	for _, tsu := range tsus {
+		for i := strings.Index(romaji, tsu); i > -1; i = strings.Index(romaji, tsu) {
+			rune_romaji := []rune(romaji)
+			if len(rune_romaji) > i+2 {
+				// TODO: should check if following letter is consonant
+				followingLetter := string(rune_romaji[i+1 : i+2])
+				romaji = strings.Replace(romaji, tsu, followingLetter, 1)
+			} else {
+				romaji = strings.Replace(romaji, tsu, "", 1)
+			}
 		}
 	}
 
-	line := "一"
+	line := "ー"
 	for i := strings.Index(romaji, line); i > -1; i = strings.Index(romaji, line) {
 		rune_romaji := []rune(romaji)
-		fmt.Println(rune_romaji)
 		if i > 0 {
 			// TODO: should check if following letter is consonant
 			previousLetter := string(rune_romaji[i-1 : i])
