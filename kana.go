@@ -11,7 +11,7 @@ type Kana struct {
 	romajiToKatakanaTrie *Trie
 }
 
-func newKana() *Kana {
+func NewKana() *Kana {
 	/*
 	   Build a trie for efficient retrieval of entries
 	*/
