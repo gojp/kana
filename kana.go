@@ -93,11 +93,13 @@ func (k Kana) kana_to_romaji(kana string) (romaji string) {
 }
 
 func (k Kana) romaji_to_hiragana(romaji string) (hiragana string) {
+	romaji = strings.Replace(romaji, "-", "ー", -1)
 	hiragana = k.romajiToHiraganaTrie.convert(romaji)
 	return hiragana
 }
 
 func (k Kana) romaji_to_katakana(romaji string) (katakana string) {
+	romaji = strings.Replace(romaji, "-", "ー", -1)
 	katakana = k.romajiToKatakanaTrie.convert(romaji)
 	return katakana
 }
