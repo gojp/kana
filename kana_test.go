@@ -57,5 +57,5 @@ func (s *KanaSuite) TestRomajiToKatakana(c *C) {
 	c.Check(k.romaji_to_katakana("banana"), Equals, "バナナ")
 	c.Check(k.romaji_to_katakana("rajio"), Equals, "ラジオ")
 	c.Check(k.romaji_to_katakana("terebi"), Equals, "テレビ")
-
+	c.Check(k.romaji_to_katakana("furi-ta-"), Equals, "フリーター")
 }
