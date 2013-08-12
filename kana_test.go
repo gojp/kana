@@ -13,7 +13,7 @@ type KanaSuite struct{}
 var _ = Suite(&KanaSuite{})
 
 func (s *KanaSuite) TestHiraganaToRomaji(c *C) {
-	k := newKana()
+	k := NewKana()
 
 	// some basic checks
 	c.Check(k.kana_to_romaji("ああいうえお"), Equals, "aaiueo")
@@ -33,7 +33,7 @@ func (s *KanaSuite) TestHiraganaToRomaji(c *C) {
 }
 
 func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
-	k := newKana()
+	k := NewKana()
 
 	// basic tests
 	c.Check(k.kana_to_romaji("バナナ"), Equals, "banana")
@@ -51,14 +51,11 @@ func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
 }
 
 func (s *KanaSuite) TestRomajiToKatakana(c *C) {
-	k := newKana()
+	k := NewKana()
 
 	// basic tests
 	c.Check(k.romaji_to_katakana("banana"), Equals, "バナナ")
 	c.Check(k.romaji_to_katakana("rajio"), Equals, "ラジオ")
-
-	// test r/l equality
 	c.Check(k.romaji_to_katakana("terebi"), Equals, "テレビ")
-	c.Check(k.romaji_to_katakana("telebi"), Equals, "テレビ")
 
 }
