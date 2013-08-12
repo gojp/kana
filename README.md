@@ -1,4 +1,4 @@
-go-kana
+kana
 =======
 
 Hiragana, Katakana to romaji and Romaji to Hiragana, Katakana converter library for Go 
