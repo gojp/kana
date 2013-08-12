@@ -6,17 +6,17 @@ Hiragana, Katakana to romaji and Romaji to Hiragana, Katakana converter library 
 Usage
 -------
 
-To use go-kana, you'll have to first initialize it:
+To use *kana*, you'll have to first initialize it:
 
     import (
-        . "github.com/hermanschaaf/go-kana"
+        "github.com/hermanschaaf/kana"
     )
     
     ...
     
-    k := NewKana()
+    k := kana.NewKana()
 
-Here are a couple of examples of how you could use go-kana:
+Here are a couple of examples of how you could use *kana*:
 
     s := k.kana_to_romaji("バナナ") // -> banana
     s = k.kana_to_romaji("かんじ") // -> kanji
