@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/gojp/kana.png?branch=master)](https://travis-ci.org/gojp/kana)
+
 kana
 =======
 
