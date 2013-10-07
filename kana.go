@@ -11,6 +11,8 @@ type Kana struct {
 	romajiToKatakanaTrie *Trie
 }
 
+var consonants []string = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "w", "z"}
+
 func NewKana() *Kana {
 	/*
 	   Build a trie for efficient retrieval of entries
@@ -57,7 +59,7 @@ func (k *Kana) initialize() {
 	}
 }
 
-func (k Kana) kana_to_romaji(kana string) (romaji string) {
+func (k Kana) Kana_to_romaji(kana string) (romaji string) {
 	romaji = k.kanaToRomajiTrie.convert(kana)
 
 	// do some post-processing for the tsu and stripe characters
@@ -92,14 +94,25 @@ func (k Kana) kana_to_romaji(kana string) (romaji string) {
 	return romaji
 }
 
-func (k Kana) romaji_to_hiragana(romaji string) (hiragana string) {
+func replace_tsus(romaji string, tsu string) (result string) {
+	result = romaji
+	for _, consonant := range consonants {
+		result = strings.Replace(result, consonant+consonant, tsu+consonant, -1)
+	}
+	return result
+}
+
+func (k Kana) Romaji_to_hiragana(romaji string) (hiragana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
+	romaji = replace_tsus(romaji, "っ")
 	hiragana = k.romajiToHiraganaTrie.convert(romaji)
 	return hiragana
 }
 
-func (k Kana) romaji_to_katakana(romaji string) (katakana string) {
+func (k Kana) Romaji_to_katakana(romaji string) (katakana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
+	// convert double consonants to little tsus first
+	romaji = replace_tsus(romaji, "ッ")
 	katakana = k.romajiToKatakanaTrie.convert(romaji)
 	return katakana
 }
