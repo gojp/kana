@@ -1,4 +1,6 @@
-	a	i	u	e	o	n
+package kana
+
+var KatakanaTable string = `	a	i	u	e	o	n
 	ア	イ	ウ	エ	オ	ン
 k	カ	キ	ク	ケ	コ
 ky	キャ		キュ		キョ
@@ -23,4 +25,4 @@ b	バ	ビ	ブ	ベ	ボ
 by	ビャ		ビュ		ビョ
 p	パ	ピ	プ	ペ	ポ
 py	ピャ		ピュ		ピョ
-v			ゔ
+v			ゔ`

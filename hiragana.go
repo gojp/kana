@@ -1,4 +1,6 @@
-	a	i	u	e	o	n
+package kana
+
+var HiraganaTable string = `	a	i	u	e	o	n
 	あ	い	う	え	お	ん
 k	か	き	く	け	こ
 ky	きゃ		きゅ		きょ
@@ -23,4 +25,4 @@ b	ば	び	ぶ	べ	ぼ
 by	びゃ		びゅ		びょ
 p	ぱ	ぴ	ぷ	ぺ	ぽ
 py	ぴゃ		ぴゅ		ぴょ
-v			ゔ
+v			ゔ`
