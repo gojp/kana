@@ -59,3 +59,11 @@ func (s *KanaSuite) TestRomajiToKatakana(c *C) {
 	c.Check(k.romaji_to_katakana("terebi"), Equals, "テレビ")
 	c.Check(k.romaji_to_katakana("furi-ta-"), Equals, "フリーター")
 }
+
+func (s *KanaSuite) TestRomajiToHiragana(c *C) {
+	k := NewKana()
+
+	c.Check(k.romaji_to_hiragana("banana"), Equals, "ばなな")
+	c.Check(k.romaji_to_hiragana("hiragana"), Equals, "ひらがな")
+	c.Check(k.romaji_to_hiragana("suppai"), Equals, "すっぱい")
+}
