@@ -1,7 +1,6 @@
 package kana
 
 import (
-	"io/ioutil"
 	"strings"
 )
 
@@ -29,13 +28,9 @@ func (k *Kana) initialize() {
 		Because there is no overlap between the hiragana and katakana sets,
 		they both use the same trie without conflict. Nice bonus!
 	*/
-	filenames := []string{"hiragana.in", "katakana.in"}
-	for _, filename := range filenames {
-		content, err := ioutil.ReadFile(filename)
-		if err != nil {
-			//Do something
-		}
-		rows := strings.Split(string(content), "\n")
+	tables := []string{HiraganaTable, KatakanaTable}
+	for t, table := range tables {
+		rows := strings.Split(table, "\n")
 		colNames := strings.Split(string(rows[0]), "\t")[1:]
 		for _, row := range rows[1:] {
 			cols := strings.Split(string(row), "\t")
@@ -47,9 +42,9 @@ func (k *Kana) initialize() {
 					if singleKana != "" {
 						// add to tries
 						k.kanaToRomajiTrie.insert(singleKana, value)
-						if filename == "hiragana.in" {
+						if t == 0 {
 							k.romajiToHiraganaTrie.insert(value, singleKana)
-						} else if filename == "katakana.in" {
+						} else if t == 1 {
 							k.romajiToKatakanaTrie.insert(value, singleKana)
 						}
 					}
