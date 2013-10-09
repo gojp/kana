@@ -2,6 +2,7 @@ package kana
 
 import (
 	"strings"
+	"unicode"
 )
 
 type Kana struct {
@@ -54,7 +55,7 @@ func (k *Kana) initialize() {
 	}
 }
 
-func (k Kana) Kana_to_romaji(kana string) (romaji string) {
+func (k Kana) KanaToRomaji(kana string) (romaji string) {
 	romaji = k.kanaToRomajiTrie.convert(kana)
 
 	// do some post-processing for the tsu and stripe characters
@@ -97,17 +98,53 @@ func replace_tsus(romaji string, tsu string) (result string) {
 	return result
 }
 
-func (k Kana) Romaji_to_hiragana(romaji string) (hiragana string) {
+func (k Kana) RomajiToHiragana(romaji string) (hiragana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
 	romaji = replace_tsus(romaji, "っ")
 	hiragana = k.romajiToHiraganaTrie.convert(romaji)
 	return hiragana
 }
 
-func (k Kana) Romaji_to_katakana(romaji string) (katakana string) {
+func (k Kana) RomajiToKatakana(romaji string) (katakana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
 	// convert double consonants to little tsus first
 	romaji = replace_tsus(romaji, "ッ")
 	katakana = k.romajiToKatakanaTrie.convert(romaji)
 	return katakana
+}
+
+func (k Kana) IsLatin(s string) bool {
+	isLatin := true
+	runeForm := []rune(s)
+	for _, r := range runeForm {
+		isLatin = isLatin && unicode.IsOneOf([]*unicode.RangeTable{unicode.Latin, unicode.ASCII_Hex_Digit, unicode.White_Space}, r)
+		if !isLatin {
+			return isLatin
+		}
+	}
+	return isLatin
+}
+
+func (k Kana) IsKana(s string) bool{
+	isKana := true
+	runeForm := []rune(s)
+	for _, r := range runeForm {
+		isKana = isKana && unicode.IsOneOf([]*unicode.RangeTable{unicode.Hiragana, unicode.Katakana, unicode.Hyphen, unicode.Diacritic}, r)
+		if !isKana {
+			return isKana
+		}
+	}
+	return isKana
+}
+
+func (k Kana) IsKanji(s string) bool {
+	isKanji := true
+	runeForm := []rune(s)
+	for _, r := range runeForm {
+		isKanji = isKanji && unicode.IsOneOf([]*unicode.RangeTable{unicode.Ideographic}, r)
+		if !isKanji {
+			return isKanji
+		}
+	}
+	return isKanji
 }
