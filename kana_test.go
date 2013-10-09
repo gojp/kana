@@ -68,4 +68,5 @@ func (s *KanaSuite) TestRomajiToHiragana(c *C) {
 	c.Check(k.Romaji_to_hiragana("banana"), Equals, "ばなな")
 	c.Check(k.Romaji_to_hiragana("hiragana"), Equals, "ひらがな")
 	c.Check(k.Romaji_to_hiragana("suppai"), Equals, "すっぱい")
+	c.Check(k.Romaji_to_hiragana("konnichiha"), Equals, "こんにちは")
 }

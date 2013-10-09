@@ -10,7 +10,7 @@ type Kana struct {
 	romajiToKatakanaTrie *Trie
 }
 
-var consonants []string = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "w", "z"}
+var consonants []string = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
 
 func NewKana() *Kana {
 	/*
