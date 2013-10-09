@@ -58,6 +58,8 @@ func (s *KanaSuite) TestRomajiToKatakana(c *C) {
 	c.Check(k.Romaji_to_katakana("rajio"), Equals, "ラジオ")
 	c.Check(k.Romaji_to_katakana("terebi"), Equals, "テレビ")
 	c.Check(k.Romaji_to_katakana("furi-ta-"), Equals, "フリーター")
+	c.Check(k.Romaji_to_katakana("fa-suto"), Equals, "ファースト")
+	c.Check(k.Romaji_to_katakana("fesutibaru"), Equals, "フェスティバル")
 }
 
 func (s *KanaSuite) TestRomajiToHiragana(c *C) {
