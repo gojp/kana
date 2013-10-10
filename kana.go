@@ -125,7 +125,7 @@ func (k Kana) IsLatin(s string) bool {
 	return isLatin
 }
 
-func (k Kana) IsKana(s string) bool{
+func (k Kana) IsKana(s string) bool {
 	isKana := true
 	runeForm := []rune(s)
 	for _, r := range runeForm {
