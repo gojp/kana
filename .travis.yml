@@ -7,5 +7,5 @@ go:
 install:
     - go get launchpad.net/gocheck
 
-notify:
-    irc: "chat.freenode.net#gojp"
+notifications:
+  irc: "chat.freenode.net#gojp"
