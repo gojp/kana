@@ -60,6 +60,7 @@ func (s *KanaSuite) TestRomajiToKatakana(c *C) {
 	c.Check(k.RomajiToKatakana("furi-ta-"), Equals, "フリーター")
 	c.Check(k.RomajiToKatakana("fa-suto"), Equals, "ファースト")
 	c.Check(k.RomajiToKatakana("fesutibaru"), Equals, "フェスティバル")
+	c.Check(k.RomajiToKatakana("ryukkusakku"), Equals, "リュックサック")
 }
 
 func (s *KanaSuite) TestRomajiToHiragana(c *C) {
@@ -69,6 +70,7 @@ func (s *KanaSuite) TestRomajiToHiragana(c *C) {
 	c.Check(k.RomajiToHiragana("hiragana"), Equals, "ひらがな")
 	c.Check(k.RomajiToHiragana("suppai"), Equals, "すっぱい")
 	c.Check(k.RomajiToHiragana("konnichiha"), Equals, "こんにちは")
+	c.Check(k.RomajiToHiragana("zouryou"), Equals, "ぞうりょう")
 }
 
 func (s *KanaSuite) TestIsLatin(c *C) {
