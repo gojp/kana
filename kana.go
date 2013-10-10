@@ -117,7 +117,7 @@ func (k Kana) IsLatin(s string) bool {
 	isLatin := true
 	runeForm := []rune(s)
 	for _, r := range runeForm {
-		isLatin = isLatin && unicode.IsOneOf([]*unicode.RangeTable{unicode.Latin, unicode.ASCII_Hex_Digit, unicode.White_Space}, r)
+		isLatin = isLatin && unicode.IsOneOf([]*unicode.RangeTable{unicode.Latin, unicode.ASCII_Hex_Digit, unicode.White_Space, unicode.Hyphen}, r)
 		if !isLatin {
 			return isLatin
 		}
@@ -125,7 +125,7 @@ func (k Kana) IsLatin(s string) bool {
 	return isLatin
 }
 
-func (k Kana) IsKana(s string) bool{
+func (k Kana) IsKana(s string) bool {
 	isKana := true
 	runeForm := []rune(s)
 	for _, r := range runeForm {

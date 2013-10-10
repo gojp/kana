@@ -86,6 +86,7 @@ func (s *KanaSuite) TestIsLatin(c *C) {
 	c.Check(k.IsLatin("a sd ds ds"), Equals, true)
 	c.Check(k.IsLatin("ばなな"), Equals, false)
 	c.Check(k.IsLatin("ファースト"), Equals, false)
+	c.Check(k.IsLatin("myu-jikku"), Equals, true)
 }
 
 func (s *KanaSuite) TestIsKana(c *C) {
