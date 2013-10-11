@@ -7,7 +7,6 @@ import (
 
 var consonants []string = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
 
-var initialized bool = false
 var kanaToRomajiTrie *Trie
 var romajiToHiraganaTrie *Trie
 var romajiToKatakanaTrie *Trie
@@ -47,7 +46,6 @@ func Initialize() {
 			}
 		}
 	}
-	initialized = true
 }
 
 func KanaToRomaji(kana string) (romaji string) {
