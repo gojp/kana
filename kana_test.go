@@ -106,3 +106,14 @@ func (s *KanaSuite) TestIsKanji(c *C) {
 	c.Check(k.IsKanji("路加"), Equals, true)
 	c.Check(k.IsKanji("減少"), Equals, true)
 }
+
+func (s *KanaSuite) TestNormalizeRomaji(c *C) {
+	k := NewKana()
+
+	c.Check(k.NormalizeRomaji("myuujikku"), Equals, "myu-jikku")
+	c.Check(k.NormalizeRomaji("Myūjikku"), Equals, "myu-jikku")
+	c.Check(k.NormalizeRomaji("Banana"), Equals, "banana")
+	c.Check(k.NormalizeRomaji("shitsuree"), Equals, "shitsurei")
+	c.Check(k.NormalizeRomaji("減少"), Equals, "減少")
+	c.Check(k.NormalizeRomaji("myuujikku Myūjikku Banana shitsuree"), Equals, "myu-jikku myu-jikku banana shitsurei")
+}
