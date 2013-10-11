@@ -148,3 +148,28 @@ func (k Kana) IsKanji(s string) bool {
 	}
 	return isKanji
 }
+
+func replaceAll(haystack string, needles []string, replacements []string) (replaced string) {
+	replaced = haystack
+	for i := range needles {
+		replaced = strings.Replace(replaced, needles[i], replacements[i], -1)
+	}
+	return replaced
+}
+
+func (k Kana) NormalizeRomaji(s string) (romaji string) {
+	// transform romaji input to one specific standard form,
+	// which should be as close as possible to hiragana so that
+	// this library gives correct output when transforming to
+	// hiragana / katakana
+
+	romaji = s
+	romaji = strings.ToLower(romaji)
+	romaji = replaceAll(
+		romaji,
+		[]string{"ā", "ē", "ī", "ō", "ū", "ee", "uu"},
+		[]string{"a-", "ei", "ii", "oo", "u-", "ei", "u-"},
+	)
+
+	return romaji
+}
