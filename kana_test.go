@@ -13,107 +13,91 @@ type KanaSuite struct{}
 var _ = Suite(&KanaSuite{})
 
 func (s *KanaSuite) TestHiraganaToRomaji(c *C) {
-	k := NewKana()
-
 	// some basic checks
-	c.Check(k.KanaToRomaji("ああいうえお"), Equals, "aaiueo")
-	c.Check(k.KanaToRomaji("かんじ"), Equals, "kanji")
-	c.Check(k.KanaToRomaji("ちゃう"), Equals, "chau")
-	c.Check(k.KanaToRomaji("はんのう"), Equals, "hannou")
-	c.Check(k.KanaToRomaji("きょうじゅ"), Equals, "kyouju")
+	c.Check(KanaToRomaji("ああいうえお"), Equals, "aaiueo")
+	c.Check(KanaToRomaji("かんじ"), Equals, "kanji")
+	c.Check(KanaToRomaji("ちゃう"), Equals, "chau")
+	c.Check(KanaToRomaji("はんのう"), Equals, "hannou")
+	c.Check(KanaToRomaji("きょうじゅ"), Equals, "kyouju")
 
 	// check that spacing is preserved
-	c.Check(k.KanaToRomaji("な\nに	ぬ	ね	の"), Equals, "na\nni	nu	ne	no")
+	c.Check(KanaToRomaji("な\nに	ぬ	ね	の"), Equals, "na\nni	nu	ne	no")
 
 	// check that english text is preserved
-	c.Check(k.KanaToRomaji("ばか dog"), Equals, "baka dog")
+	c.Check(KanaToRomaji("ばか dog"), Equals, "baka dog")
 
 	// check double-consonants and long vowels
-	c.Check(k.KanaToRomaji("きった"), Equals, "kitta")
+	c.Check(KanaToRomaji("きった"), Equals, "kitta")
 }
 
 func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
-	k := NewKana()
-
 	// basic tests
-	c.Check(k.KanaToRomaji("バナナ"), Equals, "banana")
-	c.Check(k.KanaToRomaji("カンジ"), Equals, "kanji")
+	c.Check(KanaToRomaji("バナナ"), Equals, "banana")
+	c.Check(KanaToRomaji("カンジ"), Equals, "kanji")
 
 	// check that r is preferred
-	c.Check(k.KanaToRomaji("テレビ"), Equals, "terebi")
+	c.Check(KanaToRomaji("テレビ"), Equals, "terebi")
 
 	// check english + katakana mix
-	c.Check(k.KanaToRomaji("baking バナナ pancakes"), Equals, "baking banana pancakes")
+	c.Check(KanaToRomaji("baking バナナ pancakes"), Equals, "baking banana pancakes")
 
 	// check that double-consonants and long vowels get converted correctly
-	c.Check(k.KanaToRomaji("ベッド"), Equals, "beddo")
-	c.Check(k.KanaToRomaji("モーター"), Equals, "mootaa")
+	c.Check(KanaToRomaji("ベッド"), Equals, "beddo")
+	c.Check(KanaToRomaji("モーター"), Equals, "mootaa")
 }
 
 func (s *KanaSuite) TestRomajiToKatakana(c *C) {
-	k := NewKana()
-
 	// basic tests
-	c.Check(k.RomajiToKatakana("banana"), Equals, "バナナ")
-	c.Check(k.RomajiToKatakana("rajio"), Equals, "ラジオ")
-	c.Check(k.RomajiToKatakana("terebi"), Equals, "テレビ")
-	c.Check(k.RomajiToKatakana("furi-ta-"), Equals, "フリーター")
-	c.Check(k.RomajiToKatakana("fa-suto"), Equals, "ファースト")
-	c.Check(k.RomajiToKatakana("fesutibaru"), Equals, "フェスティバル")
-	c.Check(k.RomajiToKatakana("ryukkusakku"), Equals, "リュックサック")
-	c.Check(k.RomajiToKatakana("myu-jikku"), Equals, "ミュージック")
-	c.Check(k.RomajiToKatakana("nyanda"), Equals, "ニャンダ")
-	c.Check(k.RomajiToKatakana("hyakumeootokage"), Equals, "ヒャクメオオトカゲ")
+	c.Check(RomajiToKatakana("banana"), Equals, "バナナ")
+	c.Check(RomajiToKatakana("rajio"), Equals, "ラジオ")
+	c.Check(RomajiToKatakana("terebi"), Equals, "テレビ")
+	c.Check(RomajiToKatakana("furi-ta-"), Equals, "フリーター")
+	c.Check(RomajiToKatakana("fa-suto"), Equals, "ファースト")
+	c.Check(RomajiToKatakana("fesutibaru"), Equals, "フェスティバル")
+	c.Check(RomajiToKatakana("ryukkusakku"), Equals, "リュックサック")
+	c.Check(RomajiToKatakana("myu-jikku"), Equals, "ミュージック")
+	c.Check(RomajiToKatakana("nyanda"), Equals, "ニャンダ")
+	c.Check(RomajiToKatakana("hyakumeootokage"), Equals, "ヒャクメオオトカゲ")
 }
 
 func (s *KanaSuite) TestRomajiToHiragana(c *C) {
-	k := NewKana()
-
-	c.Check(k.RomajiToHiragana("banana"), Equals, "ばなな")
-	c.Check(k.RomajiToHiragana("hiragana"), Equals, "ひらがな")
-	c.Check(k.RomajiToHiragana("suppai"), Equals, "すっぱい")
-	c.Check(k.RomajiToHiragana("konnichiha"), Equals, "こんにちは")
-	c.Check(k.RomajiToHiragana("zouryou"), Equals, "ぞうりょう")
-	c.Check(k.RomajiToHiragana("myaku"), Equals, "みゃく")
-	c.Check(k.RomajiToHiragana("nyanko"), Equals, "にゃんこ")
-	c.Check(k.RomajiToHiragana("hyaku"), Equals, "ひゃく")
+	c.Check(RomajiToHiragana("banana"), Equals, "ばなな")
+	c.Check(RomajiToHiragana("hiragana"), Equals, "ひらがな")
+	c.Check(RomajiToHiragana("suppai"), Equals, "すっぱい")
+	c.Check(RomajiToHiragana("konnichiha"), Equals, "こんにちは")
+	c.Check(RomajiToHiragana("zouryou"), Equals, "ぞうりょう")
+	c.Check(RomajiToHiragana("myaku"), Equals, "みゃく")
+	c.Check(RomajiToHiragana("nyanko"), Equals, "にゃんこ")
+	c.Check(RomajiToHiragana("hyaku"), Equals, "ひゃく")
 }
 
 func (s *KanaSuite) TestIsLatin(c *C) {
-	k := NewKana()
-
-	c.Check(k.IsLatin("banana"), Equals, true)
-	c.Check(k.IsLatin("a sd ds ds"), Equals, true)
-	c.Check(k.IsLatin("ばなな"), Equals, false)
-	c.Check(k.IsLatin("ファースト"), Equals, false)
-	c.Check(k.IsLatin("myu-jikku"), Equals, true)
+	c.Check(IsLatin("banana"), Equals, true)
+	c.Check(IsLatin("a sd ds ds"), Equals, true)
+	c.Check(IsLatin("ばなな"), Equals, false)
+	c.Check(IsLatin("ファースト"), Equals, false)
+	c.Check(IsLatin("myu-jikku"), Equals, true)
 }
 
 func (s *KanaSuite) TestIsKana(c *C) {
-	k := NewKana()
-
-	c.Check(k.IsKana("ばなな"), Equals, true)
-	c.Check(k.IsKana("ファースト"), Equals, true)
-	c.Check(k.IsKana("test"), Equals, false)
+	c.Check(IsKana("ばなな"), Equals, true)
+	c.Check(IsKana("ファースト"), Equals, true)
+	c.Check(IsKana("test"), Equals, false)
 }
 
 func (s *KanaSuite) TestIsKanji(c *C) {
-	k := NewKana()
-
-	c.Check(k.IsKanji("ばなな"), Equals, false)
-	c.Check(k.IsKanji("ファースト"), Equals, false)
-	c.Check(k.IsKanji("test"), Equals, false)
-	c.Check(k.IsKanji("路加"), Equals, true)
-	c.Check(k.IsKanji("減少"), Equals, true)
+	c.Check(IsKanji("ばなな"), Equals, false)
+	c.Check(IsKanji("ファースト"), Equals, false)
+	c.Check(IsKanji("test"), Equals, false)
+	c.Check(IsKanji("路加"), Equals, true)
+	c.Check(IsKanji("減少"), Equals, true)
 }
 
 func (s *KanaSuite) TestNormalizeRomaji(c *C) {
-	k := NewKana()
-
-	c.Check(k.NormalizeRomaji("myuujikku"), Equals, "myu-jikku")
-	c.Check(k.NormalizeRomaji("Myūjikku"), Equals, "myu-jikku")
-	c.Check(k.NormalizeRomaji("Banana"), Equals, "banana")
-	c.Check(k.NormalizeRomaji("shitsuree"), Equals, "shitsurei")
-	c.Check(k.NormalizeRomaji("減少"), Equals, "減少")
-	c.Check(k.NormalizeRomaji("myuujikku Myūjikku Banana shitsuree"), Equals, "myu-jikku myu-jikku banana shitsurei")
+	c.Check(NormalizeRomaji("myuujikku"), Equals, "myu-jikku")
+	c.Check(NormalizeRomaji("Myūjikku"), Equals, "myu-jikku")
+	c.Check(NormalizeRomaji("Banana"), Equals, "banana")
+	c.Check(NormalizeRomaji("shitsuree"), Equals, "shitsurei")
+	c.Check(NormalizeRomaji("減少"), Equals, "減少")
+	c.Check(NormalizeRomaji("myuujikku Myūjikku Banana shitsuree"), Equals, "myu-jikku myu-jikku banana shitsurei")
 }
