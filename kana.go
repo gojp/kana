@@ -5,30 +5,24 @@ import (
 	"unicode"
 )
 
-type Kana struct {
-	kanaToRomajiTrie     *Trie
-	romajiToHiraganaTrie *Trie
-	romajiToKatakanaTrie *Trie
-}
-
 var consonants []string = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
 
-func NewKana() *Kana {
-	/*
-	   Build a trie for efficient retrieval of entries
-	*/
-	kana := &Kana{newTrie(), newTrie(), newTrie()}
-	kana.initialize()
-	return kana
-}
+var initialized bool = false
+var kanaToRomajiTrie *Trie
+var romajiToHiraganaTrie *Trie
+var romajiToKatakanaTrie *Trie
 
-func (k *Kana) initialize() {
+func Initialize() {
 	/*
 		Build the Hiragana + Katakana trie.
 
 		Because there is no overlap between the hiragana and katakana sets,
 		they both use the same trie without conflict. Nice bonus!
 	*/
+	kanaToRomajiTrie = newTrie()
+	romajiToHiraganaTrie = newTrie()
+	romajiToKatakanaTrie = newTrie()
+
 	tables := []string{HiraganaTable, KatakanaTable}
 	for t, table := range tables {
 		rows := strings.Split(table, "\n")
@@ -42,21 +36,22 @@ func (k *Kana) initialize() {
 				for _, singleKana := range kanas {
 					if singleKana != "" {
 						// add to tries
-						k.kanaToRomajiTrie.insert(singleKana, value)
+						kanaToRomajiTrie.insert(singleKana, value)
 						if t == 0 {
-							k.romajiToHiraganaTrie.insert(value, singleKana)
+							romajiToHiraganaTrie.insert(value, singleKana)
 						} else if t == 1 {
-							k.romajiToKatakanaTrie.insert(value, singleKana)
+							romajiToKatakanaTrie.insert(value, singleKana)
 						}
 					}
 				}
 			}
 		}
 	}
+	initialized = true
 }
 
-func (k Kana) KanaToRomaji(kana string) (romaji string) {
-	romaji = k.kanaToRomajiTrie.convert(kana)
+func KanaToRomaji(kana string) (romaji string) {
+	romaji = kanaToRomajiTrie.convert(kana)
 
 	// do some post-processing for the tsu and stripe characters
 	// maybe a bit of a hacky solution - how can we improve?
@@ -98,22 +93,22 @@ func replace_tsus(romaji string, tsu string) (result string) {
 	return result
 }
 
-func (k Kana) RomajiToHiragana(romaji string) (hiragana string) {
+func RomajiToHiragana(romaji string) (hiragana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
 	romaji = replace_tsus(romaji, "っ")
-	hiragana = k.romajiToHiraganaTrie.convert(romaji)
+	hiragana = romajiToHiraganaTrie.convert(romaji)
 	return hiragana
 }
 
-func (k Kana) RomajiToKatakana(romaji string) (katakana string) {
+func RomajiToKatakana(romaji string) (katakana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
 	// convert double consonants to little tsus first
 	romaji = replace_tsus(romaji, "ッ")
-	katakana = k.romajiToKatakanaTrie.convert(romaji)
+	katakana = romajiToKatakanaTrie.convert(romaji)
 	return katakana
 }
 
-func (k Kana) IsLatin(s string) bool {
+func IsLatin(s string) bool {
 	isLatin := true
 	runeForm := []rune(s)
 	for _, r := range runeForm {
@@ -125,7 +120,7 @@ func (k Kana) IsLatin(s string) bool {
 	return isLatin
 }
 
-func (k Kana) IsKana(s string) bool {
+func IsKana(s string) bool {
 	isKana := true
 	runeForm := []rune(s)
 	for _, r := range runeForm {
@@ -137,7 +132,7 @@ func (k Kana) IsKana(s string) bool {
 	return isKana
 }
 
-func (k Kana) IsKanji(s string) bool {
+func IsKanji(s string) bool {
 	isKanji := true
 	runeForm := []rune(s)
 	for _, r := range runeForm {
@@ -157,7 +152,7 @@ func replaceAll(haystack string, needles []string, replacements []string) (repla
 	return replaced
 }
 
-func (k Kana) NormalizeRomaji(s string) (romaji string) {
+func NormalizeRomaji(s string) (romaji string) {
 	// transform romaji input to one specific standard form,
 	// which should be as close as possible to hiragana so that
 	// this library gives correct output when transforming to
