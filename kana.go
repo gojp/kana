@@ -70,7 +70,6 @@ func KanaToRomaji(kana string) (romaji string) {
 
 	line := "ー"
 	for i := strings.Index(romaji, line); i > -1; i = strings.Index(romaji, line) {
-		println(romaji, i)
 		if i > 0 {
 			romaji = strings.Replace(romaji, line, "-", 1)
 		} else {

@@ -46,7 +46,6 @@ func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
 	c.Check(KanaToRomaji("モーター"), Equals, "mo-ta-")
 
 	// check random input
-	println("KanaToRomaji")
 	c.Check(KanaToRomaji("ＣＤプレーヤー"), Equals, "ＣＤpure-ya-")
 }
 
@@ -64,7 +63,6 @@ func (s *KanaSuite) TestRomajiToKatakana(c *C) {
 	c.Check(RomajiToKatakana("hyakumeootokage"), Equals, "ヒャクメオオトカゲ")
 
 	// shouldn't do anything:
-	println("TestRomajiToKatakana")
 	c.Check(RomajiToKatakana("ＣＤプレーヤー"), Equals, "ＣＤプレーヤー")
 }
 
@@ -79,7 +77,6 @@ func (s *KanaSuite) TestRomajiToHiragana(c *C) {
 	c.Check(RomajiToHiragana("hyaku"), Equals, "ひゃく")
 
 	// shouldn't do anything:
-	println("TestRomajiToHiragana")
 	c.Check(RomajiToHiragana("ＣＤプレーヤー"), Equals, "ＣＤプレーヤー")
 }
 
@@ -90,7 +87,6 @@ func (s *KanaSuite) TestIsLatin(c *C) {
 	c.Check(IsLatin("ファースト"), Equals, false)
 	c.Check(IsLatin("myu-jikku"), Equals, true)
 
-	println("isLatin")
 	c.Check(IsLatin("ＣＤプレーヤー"), Equals, false)
 }
 
