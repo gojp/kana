@@ -3,6 +3,7 @@ package kana
 import (
 	"strings"
 	"unicode"
+	"unicode/utf8"
 )
 
 var consonants []string = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
@@ -56,14 +57,20 @@ func KanaToRomaji(kana string) (romaji string) {
 	// (they act more like punctuation)
 	tsus := []string{"っ", "ッ"}
 	for _, tsu := range tsus {
-		for i := strings.Index(romaji, tsu); i > -1; i = strings.Index(romaji, tsu) {
-			rune_romaji := []rune(romaji)
-			if len(rune_romaji) > i+2 {
-				// TODO: should check if following letter is consonant
-				followingLetter := string(rune_romaji[i+1 : i+2])
-				romaji = strings.Replace(romaji, tsu, followingLetter, 1)
-			} else {
-				romaji = strings.Replace(romaji, tsu, "", 1)
+		if strings.Index(romaji, tsu) > -1 {
+			for _, c := range romaji {
+				ch := string(c)
+				if ch == tsu {
+					i := strings.Index(romaji, ch)
+					runeSize := len(ch)
+					followingLetter, _ := utf8.DecodeRuneInString(romaji[i+runeSize:])
+					followingLetterStr := string(followingLetter)
+					if followingLetterStr != tsu {
+						romaji = strings.Replace(romaji, tsu, followingLetterStr, 1)
+					} else {
+						romaji = strings.Replace(romaji, tsu, "", 1)
+					}
+				}
 			}
 		}
 	}
@@ -76,7 +83,6 @@ func KanaToRomaji(kana string) (romaji string) {
 			romaji = strings.Replace(romaji, line, "", 1)
 		}
 	}
-
 	return romaji
 }
 
