@@ -47,6 +47,7 @@ func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
 
 	// check random input
 	c.Check(KanaToRomaji("ＣＤプレーヤー"), Equals, "ＣＤpure-ya-")
+	c.Check(KanaToRomaji("オーバーヘッドキック"), Equals, "o-ba-heddokikku")
 }
 
 func (s *KanaSuite) TestRomajiToKatakana(c *C) {
