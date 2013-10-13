@@ -70,11 +70,8 @@ func KanaToRomaji(kana string) (romaji string) {
 
 	line := "ー"
 	for i := strings.Index(romaji, line); i > -1; i = strings.Index(romaji, line) {
-		rune_romaji := []rune(romaji)
 		if i > 0 {
-			// TODO: should check if following letter is consonant
-			previousLetter := string(rune_romaji[i-1 : i])
-			romaji = strings.Replace(romaji, line, previousLetter, 1)
+			romaji = strings.Replace(romaji, line, "-", 1)
 		} else {
 			romaji = strings.Replace(romaji, line, "", 1)
 		}
