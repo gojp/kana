@@ -43,7 +43,11 @@ func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
 
 	// check that double-consonants and long vowels get converted correctly
 	c.Check(KanaToRomaji("ベッド"), Equals, "beddo")
-	c.Check(KanaToRomaji("モーター"), Equals, "mootaa")
+	c.Check(KanaToRomaji("モーター"), Equals, "mo-ta-")
+
+	// check random input
+	println("KanaToRomaji")
+	c.Check(KanaToRomaji("ＣＤプレーヤー"), Equals, "ＣＤpure-ya-")
 }
 
 func (s *KanaSuite) TestRomajiToKatakana(c *C) {
@@ -58,6 +62,10 @@ func (s *KanaSuite) TestRomajiToKatakana(c *C) {
 	c.Check(RomajiToKatakana("myu-jikku"), Equals, "ミュージック")
 	c.Check(RomajiToKatakana("nyanda"), Equals, "ニャンダ")
 	c.Check(RomajiToKatakana("hyakumeootokage"), Equals, "ヒャクメオオトカゲ")
+
+	// shouldn't do anything:
+	println("TestRomajiToKatakana")
+	c.Check(RomajiToKatakana("ＣＤプレーヤー"), Equals, "ＣＤプレーヤー")
 }
 
 func (s *KanaSuite) TestRomajiToHiragana(c *C) {
@@ -69,6 +77,10 @@ func (s *KanaSuite) TestRomajiToHiragana(c *C) {
 	c.Check(RomajiToHiragana("myaku"), Equals, "みゃく")
 	c.Check(RomajiToHiragana("nyanko"), Equals, "にゃんこ")
 	c.Check(RomajiToHiragana("hyaku"), Equals, "ひゃく")
+
+	// shouldn't do anything:
+	println("TestRomajiToHiragana")
+	c.Check(RomajiToHiragana("ＣＤプレーヤー"), Equals, "ＣＤプレーヤー")
 }
 
 func (s *KanaSuite) TestIsLatin(c *C) {
@@ -77,6 +89,9 @@ func (s *KanaSuite) TestIsLatin(c *C) {
 	c.Check(IsLatin("ばなな"), Equals, false)
 	c.Check(IsLatin("ファースト"), Equals, false)
 	c.Check(IsLatin("myu-jikku"), Equals, true)
+
+	println("isLatin")
+	c.Check(IsLatin("ＣＤプレーヤー"), Equals, false)
 }
 
 func (s *KanaSuite) TestIsKana(c *C) {
