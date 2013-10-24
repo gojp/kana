@@ -76,6 +76,7 @@ func (s *KanaSuite) TestRomajiToHiragana(c *C) {
 	c.Check(RomajiToHiragana("myaku"), Equals, "みゃく")
 	c.Check(RomajiToHiragana("nyanko"), Equals, "にゃんこ")
 	c.Check(RomajiToHiragana("hyaku"), Equals, "ひゃく")
+	c.Check(RomajiToHiragana("motoduku"), Equals, "もとづく")
 
 	// shouldn't do anything:
 	c.Check(RomajiToHiragana("ＣＤプレーヤー"), Equals, "ＣＤプレーヤー")
