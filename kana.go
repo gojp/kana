@@ -1,12 +1,16 @@
 package kana
 
 import (
+	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
 )
 
 var consonants []string = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
+
+var hiragana_re = regexp.MustCompile(`ん([あいうえおなにぬねの])`)
+var katakana_re = regexp.MustCompile(`ン([アイウエオナニヌネノ])`)
 
 var kanaToRomajiTrie *Trie
 var romajiToHiraganaTrie *Trie
@@ -50,7 +54,12 @@ func Initialize() {
 }
 
 func KanaToRomaji(kana string) (romaji string) {
-	romaji = kanaToRomajiTrie.convert(kana)
+
+	// unfortunate hack to deal with double n's
+	romaji = hiragana_re.ReplaceAllString(kana, "nn$1")
+	romaji = katakana_re.ReplaceAllString(romaji, "nn$1")
+
+	romaji = kanaToRomajiTrie.convert(romaji)
 
 	// do some post-processing for the tsu and stripe characters
 	// maybe a bit of a hacky solution - how can we improve?
@@ -94,9 +103,16 @@ func replace_tsus(romaji string, tsu string) (result string) {
 	return result
 }
 
+func replace_ns(romaji string, n string) (result string) {
+	result = romaji
+	result = strings.Replace(result, "nn", n, -1)
+	return result
+}
+
 func RomajiToHiragana(romaji string) (hiragana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
 	romaji = replace_tsus(romaji, "っ")
+	romaji = replace_ns(romaji, "ん")
 	hiragana = romajiToHiraganaTrie.convert(romaji)
 	return hiragana
 }
@@ -105,6 +121,7 @@ func RomajiToKatakana(romaji string) (katakana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
 	// convert double consonants to little tsus first
 	romaji = replace_tsus(romaji, "ッ")
+	romaji = replace_ns(romaji, "ン")
 	katakana = romajiToKatakanaTrie.convert(romaji)
 	return katakana
 }
