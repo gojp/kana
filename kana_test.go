@@ -19,6 +19,7 @@ func (s *KanaSuite) TestHiraganaToRomaji(c *C) {
 	c.Check(KanaToRomaji("ちゃう"), Equals, "chau")
 	c.Check(KanaToRomaji("はんのう"), Equals, "hannou")
 	c.Check(KanaToRomaji("きょうじゅ"), Equals, "kyouju")
+	c.Check(KanaToRomaji("ぜんいん"), Equals, "zennin")
 
 	// check that spacing is preserved
 	c.Check(KanaToRomaji("な\nに	ぬ	ね	の"), Equals, "na\nni	nu	ne	no")
@@ -77,6 +78,7 @@ func (s *KanaSuite) TestRomajiToHiragana(c *C) {
 	c.Check(RomajiToHiragana("nyanko"), Equals, "にゃんこ")
 	c.Check(RomajiToHiragana("hyaku"), Equals, "ひゃく")
 	c.Check(RomajiToHiragana("motoduku"), Equals, "もとづく")
+	c.Check(RomajiToHiragana("zennin"), Equals, "ぜんいん")
 
 	// shouldn't do anything:
 	c.Check(RomajiToHiragana("ＣＤプレーヤー"), Equals, "ＣＤプレーヤー")
