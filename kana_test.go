@@ -1,129 +1,167 @@
 package kana
 
-import (
-	. "launchpad.net/gocheck"
-	"testing"
-)
+import "testing"
 
-// Hook up gocheck into the "go test" runner.
-func Test(t *testing.T) { TestingT(t) }
-
-type KanaSuite struct{}
-
-var _ = Suite(&KanaSuite{})
-
-func (s *KanaSuite) TestHiraganaToRomaji(c *C) {
-	// some basic checks
-	c.Check(KanaToRomaji("ああいうえお"), Equals, "aaiueo")
-	c.Check(KanaToRomaji("かんじ"), Equals, "kanji")
-	c.Check(KanaToRomaji("ちゃう"), Equals, "chau")
-	c.Check(KanaToRomaji("きょうじゅ"), Equals, "kyouju")
-
-	// check that spacing is preserved
-	c.Check(KanaToRomaji("な\nに	ぬ	ね	の"), Equals, "na\nni	nu	ne	no")
-
-	// check that english text is preserved
-	c.Check(KanaToRomaji("ばか dog"), Equals, "baka dog")
-
-	// check double-consonants and long vowels
-	c.Check(KanaToRomaji("きった"), Equals, "kitta")
-
-	// check double/triple n's
-	c.Check(KanaToRomaji("はんのう"), Equals, "hannnou")
-	c.Check(KanaToRomaji("ぜんいん"), Equals, "zennin")
-	c.Check(KanaToRomaji("んい"), Equals, "nni")
-	c.Check(KanaToRomaji("はんのう"), Equals, "hannnou")
-	c.Check(KanaToRomaji("はんおう"), Equals, "hannou")
+type kanaTest struct {
+	orig, want string
 }
 
-func (s *KanaSuite) TestKatakanaToRomaji(c *C) {
-	// basic tests
-	c.Check(KanaToRomaji("バナナ"), Equals, "banana")
-	c.Check(KanaToRomaji("カンジ"), Equals, "kanji")
-
-	// check that r is preferred
-	c.Check(KanaToRomaji("テレビ"), Equals, "terebi")
-
-	// check english + katakana mix
-	c.Check(KanaToRomaji("baking バナナ pancakes"), Equals, "baking banana pancakes")
-
-	// check that double-consonants and long vowels get converted correctly
-	c.Check(KanaToRomaji("ベッド"), Equals, "beddo")
-	c.Check(KanaToRomaji("モーター"), Equals, "mo-ta-")
-
-	// check random input
-	c.Check(KanaToRomaji("ＣＤプレーヤー"), Equals, "ＣＤpure-ya-")
-	c.Check(KanaToRomaji("オーバーヘッドキック"), Equals, "o-ba-heddokikku")
-
-	// test double (triple) n's
-	c.Check(KanaToRomaji("ハンノウ"), Equals, "hannnou")
+var hiraganaToRomajiTests = []kanaTest{
+	{"ああいうえお", "aaiueo"},
+	{"かんじ", "kanji"},
+	{"ちゃう", "chau"},
+	{"きょうじゅ", "kyouju"},
+	{"な\nに	ぬ	ね	の", "na\nni	nu	ne	no"},
+	{"ばか dog", "baka dog"},
+	{"きった", "kitta"},
+	{"はんのう", "hannnou"},
+	{"ぜんいん", "zennin"},
+	{"んい", "nni"},
+	{"はんのう", "hannnou"},
+	{"はんおう", "hannou"},
 }
 
-func (s *KanaSuite) TestRomajiToKatakana(c *C) {
-	// basic tests
-	c.Check(RomajiToKatakana("banana"), Equals, "バナナ")
-	c.Check(RomajiToKatakana("rajio"), Equals, "ラジオ")
-	c.Check(RomajiToKatakana("terebi"), Equals, "テレビ")
-	c.Check(RomajiToKatakana("furi-ta-"), Equals, "フリーター")
-	c.Check(RomajiToKatakana("fa-suto"), Equals, "ファースト")
-	c.Check(RomajiToKatakana("fesutibaru"), Equals, "フェスティバル")
-	c.Check(RomajiToKatakana("ryukkusakku"), Equals, "リュックサック")
-	c.Check(RomajiToKatakana("myu-jikku"), Equals, "ミュージック")
-	c.Check(RomajiToKatakana("nyanda"), Equals, "ニャンダ")
-	c.Check(RomajiToKatakana("hyakumeootokage"), Equals, "ヒャクメオオトカゲ")
-
-	// shouldn't do anything:
-	c.Check(RomajiToKatakana("ＣＤプレーヤー"), Equals, "ＣＤプレーヤー")
+func TestHiraganaToRomaji(t *testing.T) {
+	for _, tt := range hiraganaToRomajiTests {
+		if got := KanaToRomaji(tt.orig); got != tt.want {
+			t.Errorf("KanaToRomaji(%q) = %q, want %q", tt.orig, got, tt.want)
+		}
+	}
 }
 
-func (s *KanaSuite) TestRomajiToHiragana(c *C) {
-	c.Check(RomajiToHiragana("banana"), Equals, "ばなな")
-	c.Check(RomajiToHiragana("hiragana"), Equals, "ひらがな")
-	c.Check(RomajiToHiragana("suppai"), Equals, "すっぱい")
-	c.Check(RomajiToHiragana("konnnichiha"), Equals, "こんにちは")
-	c.Check(RomajiToHiragana("zouryou"), Equals, "ぞうりょう")
-	c.Check(RomajiToHiragana("myaku"), Equals, "みゃく")
-	c.Check(RomajiToHiragana("nyanko"), Equals, "にゃんこ")
-	c.Check(RomajiToHiragana("hyaku"), Equals, "ひゃく")
-	c.Check(RomajiToHiragana("motoduku"), Equals, "もとづく")
-	c.Check(RomajiToHiragana("zenin"), Equals, "ぜにん")
-	c.Check(RomajiToHiragana("zennin"), Equals, "ぜんいん")
-	c.Check(RomajiToHiragana("hannnou"), Equals, "はんのう")
-	c.Check(RomajiToHiragana("hannou"), Equals, "はんおう")
-
-	// shouldn't do anything:
-	c.Check(RomajiToHiragana("ＣＤプレーヤー"), Equals, "ＣＤプレーヤー")
+var katakanaToRomajiTests = []kanaTest{
+	{"バナナ", "banana"},
+	{"カンジ", "kanji"},
+	{"テレビ", "terebi"},
+	{"baking バナナ pancakes", "baking banana pancakes"},
+	{"ベッド", "beddo"},
+	{"モーター", "mo-ta-"},
+	{"ＣＤプレーヤー", "ＣＤpure-ya-"},
+	{"オーバーヘッドキック", "o-ba-heddokikku"},
+	{"ハンノウ", "hannnou"},
 }
 
-func (s *KanaSuite) TestIsLatin(c *C) {
-	c.Check(IsLatin("banana"), Equals, true)
-	c.Check(IsLatin("a sd ds ds"), Equals, true)
-	c.Check(IsLatin("ばなな"), Equals, false)
-	c.Check(IsLatin("ファースト"), Equals, false)
-	c.Check(IsLatin("myu-jikku"), Equals, true)
-
-	c.Check(IsLatin("ＣＤプレーヤー"), Equals, false)
+func TestKatakanaToRomaji(t *testing.T) {
+	for _, tt := range katakanaToRomajiTests {
+		if got := KanaToRomaji(tt.orig); got != tt.want {
+			t.Errorf("KanaToRomaji(%q) = %q, want %q", tt.orig, got, tt.want)
+		}
+	}
 }
 
-func (s *KanaSuite) TestIsKana(c *C) {
-	c.Check(IsKana("ばなな"), Equals, true)
-	c.Check(IsKana("ファースト"), Equals, true)
-	c.Check(IsKana("test"), Equals, false)
+var romajiToKatakanaTests = []kanaTest{
+	{"banana", "バナナ"},
+	{"rajio", "ラジオ"},
+	{"terebi", "テレビ"},
+	{"furi-ta-", "フリーター"},
+	{"fa-suto", "ファースト"},
+	{"fesutibaru", "フェスティバル"},
+	{"ryukkusakku", "リュックサック"},
+	{"myu-jikku", "ミュージック"},
+	{"nyanda", "ニャンダ"},
+	{"hyakumeootokage", "ヒャクメオオトカゲ"},
+	{"ＣＤプレーヤー", "ＣＤプレーヤー"},
 }
 
-func (s *KanaSuite) TestIsKanji(c *C) {
-	c.Check(IsKanji("ばなな"), Equals, false)
-	c.Check(IsKanji("ファースト"), Equals, false)
-	c.Check(IsKanji("test"), Equals, false)
-	c.Check(IsKanji("路加"), Equals, true)
-	c.Check(IsKanji("減少"), Equals, true)
+func TestRomajiToKatakana(t *testing.T) {
+	for _, tt := range romajiToKatakanaTests {
+		if got := RomajiToKatakana(tt.orig); got != tt.want {
+			t.Errorf("RomajiToKatakana(%q) = %q, want %q", tt.orig, got, tt.want)
+		}
+	}
 }
 
-func (s *KanaSuite) TestNormalizeRomaji(c *C) {
-	c.Check(NormalizeRomaji("myuujikku"), Equals, "myu-jikku")
-	c.Check(NormalizeRomaji("Myūjikku"), Equals, "myu-jikku")
-	c.Check(NormalizeRomaji("Banana"), Equals, "banana")
-	c.Check(NormalizeRomaji("shitsuree"), Equals, "shitsurei")
-	c.Check(NormalizeRomaji("減少"), Equals, "減少")
-	c.Check(NormalizeRomaji("myuujikku Myūjikku Banana shitsuree"), Equals, "myu-jikku myu-jikku banana shitsurei")
+var romajiToHiraganaTests = []kanaTest{
+	{"banana", "ばなな"},
+	{"hiragana", "ひらがな"},
+	{"suppai", "すっぱい"},
+	{"konnnichiha", "こんにちは"},
+	{"zouryou", "ぞうりょう"},
+	{"myaku", "みゃく"},
+	{"nyanko", "にゃんこ"},
+	{"hyaku", "ひゃく"},
+	{"motoduku", "もとづく"},
+	{"zenin", "ぜにん"},
+	{"zennin", "ぜんいん"},
+	{"hannnou", "はんのう"},
+	{"hannou", "はんおう"},
+	{"chuutohanpa", "ちゅうとはんぱ"},
+	{"ＣＤプレーヤー", "ＣＤプレーヤー"},
+}
+
+func TestRomajiToHiragana(t *testing.T) {
+	for _, tt := range romajiToHiraganaTests {
+		if got := RomajiToHiragana(tt.orig); got != tt.want {
+			t.Errorf("RomajiToHiragana(%q) = %q, want %q", tt.orig, got, tt.want)
+		}
+	}
+}
+
+type typeTest struct {
+	text  string
+	valid bool
+}
+
+var isLatinTests = []typeTest{
+	{"banana", true},
+	{"a sd ds ds", true},
+	{"ばなな", false},
+	{"ファースト", false},
+	{"myu-jikku", true},
+	{"ＣＤプレーヤー", false},
+}
+
+func TestIsLatin(t *testing.T) {
+	for _, tt := range isLatinTests {
+		if got := IsLatin(tt.text); got != tt.valid {
+			t.Errorf("IsLatin(%q) = %t, want %t", tt.text, got, tt.valid)
+		}
+	}
+}
+
+var isKanaTests = []typeTest{
+	{"ばなな", true},
+	{"ファースト", true},
+	{"test", false},
+}
+
+func TestIsKana(t *testing.T) {
+	for _, tt := range isKanaTests {
+		if got := IsKana(tt.text); got != tt.valid {
+			t.Errorf("IsKana(%q) = %t, want %t", tt.text, got, tt.valid)
+		}
+	}
+}
+
+var isKanjiTests = []typeTest{
+	{"ばなな", false},
+	{"ファースト", false},
+	{"test", false},
+	{"路加", true},
+	{"減少", true},
+}
+
+func TestIsKanji(t *testing.T) {
+	for _, tt := range isKanjiTests {
+		if got := IsKanji(tt.text); got != tt.valid {
+			t.Errorf("IsKanji(%q) = %t, want %t", tt.text, got, tt.valid)
+		}
+	}
+}
+
+var normalizeRomajiTests = []kanaTest{
+	{"myuujikku", "myu-jikku"},
+	{"Myūjikku", "myu-jikku"},
+	{"Banana", "banana"},
+	{"shitsuree", "shitsurei"},
+	{"減少", "減少"},
+	{"myuujikku Myūjikku Banana shitsuree", "myu-jikku myu-jikku banana shitsurei"},
+}
+
+func TestNormalizeRomaji(t *testing.T) {
+	for _, tt := range normalizeRomajiTests {
+		if got := NormalizeRomaji(tt.orig); got != tt.want {
+			t.Errorf("NormalizeRomaji(%q) = %q, want %q", tt.orig, got, tt.want)
+		}
+	}
 }
