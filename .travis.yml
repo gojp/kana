@@ -1,6 +1,6 @@
 language: go
 go:
-  - 1.2
+  - 1.3
 before_script:
   - fmtRes="$(gofmt -s -l .)" bash -c '[ "$fmtRes" == "" ] || (echo -e "The following files did not pass gofmt -s:\n" "$fmtRes" && exit 1)'
 notifications:
