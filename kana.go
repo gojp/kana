@@ -7,7 +7,7 @@ import (
 	"unicode/utf8"
 )
 
-var consonants []string = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
+var consonants = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
 
 var hiragana_re = regexp.MustCompile(`ん([あいうえおなにぬねの])`)
 var katakana_re = regexp.MustCompile(`ン([アイウエオナニヌネノ])`)
