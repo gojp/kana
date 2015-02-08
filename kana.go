@@ -97,7 +97,7 @@ func KanaToRomaji(kana string) (romaji string) {
 	return romaji
 }
 
-func replace_tsus(romaji string, tsu string) (result string) {
+func replaceTsus(romaji string, tsu string) (result string) {
 	result = romaji
 	for _, consonant := range consonants {
 		result = strings.Replace(result, consonant+consonant, tsu+consonant, -1)
@@ -105,7 +105,7 @@ func replace_tsus(romaji string, tsu string) (result string) {
 	return result
 }
 
-func replace_ns(romaji string, n string) (result string) {
+func replaceNs(romaji string, n string) (result string) {
 	result = romaji
 	result = strings.Replace(result, "nn", n, -1)
 	return result
@@ -113,8 +113,8 @@ func replace_ns(romaji string, n string) (result string) {
 
 func RomajiToHiragana(romaji string) (hiragana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
-	romaji = replace_tsus(romaji, "っ")
-	romaji = replace_ns(romaji, "ん")
+	romaji = replaceTsus(romaji, "っ")
+	romaji = replaceNs(romaji, "ん")
 	hiragana = romajiToHiraganaTrie.convert(romaji)
 	return hiragana
 }
@@ -122,8 +122,8 @@ func RomajiToHiragana(romaji string) (hiragana string) {
 func RomajiToKatakana(romaji string) (katakana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
 	// convert double consonants to little tsus first
-	romaji = replace_tsus(romaji, "ッ")
-	romaji = replace_ns(romaji, "ン")
+	romaji = replaceTsus(romaji, "ッ")
+	romaji = replaceNs(romaji, "ン")
 	katakana = romajiToKatakanaTrie.convert(romaji)
 	return katakana
 }
