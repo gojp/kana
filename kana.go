@@ -18,13 +18,10 @@ var (
 	romajiToKatakanaTrie *Trie
 )
 
+// Initialize builds the Hiragana + Katakana trie.
+// Because there is no overlap between the hiragana and katakana sets,
+// they both use the same trie without conflict. Nice bonus!
 func Initialize() {
-	/*
-		Build the Hiragana + Katakana trie.
-
-		Because there is no overlap between the hiragana and katakana sets,
-		they both use the same trie without conflict. Nice bonus!
-	*/
 	kanaToRomajiTrie = newTrie()
 	romajiToHiraganaTrie = newTrie()
 	romajiToKatakanaTrie = newTrie()
@@ -128,40 +125,26 @@ func RomajiToKatakana(romaji string) (katakana string) {
 	return katakana
 }
 
-func IsLatin(s string) bool {
-	isLatin := true
+func isChar(s string, rangeTable []*unicode.RangeTable) bool {
 	runeForm := []rune(s)
 	for _, r := range runeForm {
-		isLatin = isLatin && unicode.IsOneOf([]*unicode.RangeTable{unicode.Latin, unicode.ASCII_Hex_Digit, unicode.White_Space, unicode.Hyphen}, r)
-		if !isLatin {
-			return isLatin
+		if !unicode.IsOneOf(rangeTable, r) {
+			return false
 		}
 	}
-	return isLatin
+	return true
+}
+
+func IsLatin(s string) bool {
+	return isChar(s, []*unicode.RangeTable{unicode.Latin, unicode.ASCII_Hex_Digit, unicode.White_Space, unicode.Hyphen})
 }
 
 func IsKana(s string) bool {
-	isKana := true
-	runeForm := []rune(s)
-	for _, r := range runeForm {
-		isKana = isKana && unicode.IsOneOf([]*unicode.RangeTable{unicode.Hiragana, unicode.Katakana, unicode.Hyphen, unicode.Diacritic}, r)
-		if !isKana {
-			return isKana
-		}
-	}
-	return isKana
+	return isChar(s, []*unicode.RangeTable{unicode.Hiragana, unicode.Katakana, unicode.Hyphen, unicode.Diacritic})
 }
 
 func IsKanji(s string) bool {
-	isKanji := true
-	runeForm := []rune(s)
-	for _, r := range runeForm {
-		isKanji = isKanji && unicode.IsOneOf([]*unicode.RangeTable{unicode.Ideographic}, r)
-		if !isKanji {
-			return isKanji
-		}
-	}
-	return isKanji
+	return isChar(s, []*unicode.RangeTable{unicode.Ideographic})
 }
 
 func replaceAll(haystack string, needles []string, replacements []string) (replaced string) {
