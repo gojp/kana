@@ -6,19 +6,13 @@ type Trie struct {
 	values   []string
 }
 
+// Build a trie for efficient retrieval of entries
 func newTrie() *Trie {
-	/*
-	   Build a trie for efficient retrieval of entries
-	*/
-	var root *Trie = &Trie{map[string]*Trie{}, "", []string{}}
-	return root
+	return &Trie{map[string]*Trie{}, "", []string{}}
 }
 
+// Insert a value into the trie
 func (t *Trie) insert(letters, value string) {
-	/*
-		Insert a value into the trie
-	*/
-
 	lettersRune := []rune(letters)
 
 	// loop through letters in argument word
@@ -43,13 +37,11 @@ func (t *Trie) insert(letters, value string) {
 	}
 }
 
+// Search for a string in the Trie.
+//
+// Returns the corresponding array of strings if found,
+// or an empty array otherwise.
 func (t *Trie) search(srch string) (found []string) {
-	/*
-		Search for a string in the Trie.
-
-		Returns the corresponding array of strings if found,
-		or an empty array otherwise.
-	*/
 	srchRune := []rune(srch)
 
 	for l, letter := range srchRune {
@@ -67,13 +59,11 @@ func (t *Trie) search(srch string) (found []string) {
 	return found
 }
 
+// Convert a given string to the corresponding values
+// in the trie. This performed in a greedy fashion,
+// replacing the longest valid string it can find at any
+// given point.
 func (t *Trie) convert(origin string) (result string) {
-	/*
-		Convert a given string to the corresponding values
-		in the trie. This performed in a greedy fashion,
-		replacing the longest valid string it can find at any
-		given point.
-	*/
 	root := t
 	originRune := []rune(origin)
 	result = ""
@@ -87,13 +77,12 @@ func (t *Trie) convert(origin string) (result string) {
 			if t.children[letter] == nil {
 				// not found
 				break
-			} else {
-				if len(t.children[letter].values) > 0 {
-					foundVal = t.children[letter].values[0]
-					depth = i
-				}
-				t = t.children[letter]
 			}
+			if len(t.children[letter].values) > 0 {
+				foundVal = t.children[letter].values[0]
+				depth = i
+			}
+			t = t.children[letter]
 		}
 		if foundVal != "" {
 			result += foundVal
