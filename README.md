@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/gojp/kana.png?branch=master)](https://travis-ci.org/gojp/kana)
+[![Build Status](https://travis-ci.org/gojp/kana.png?branch=master)](https://travis-ci.org/gojp/kana) [![go report card](http://goreportcard.com/badge/gojp/kana)](http://goreportcard.com/gojp/kana)
 
 kana
 =======
