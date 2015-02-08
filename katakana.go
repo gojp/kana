@@ -1,6 +1,7 @@
 package kana
 
-var KatakanaTable string = `	a	i	u	e	o	n
+// KatakanaTable maps romaji to katakana
+var KatakanaTable = `	a	i	u	e	o	n
 	ア	イ	ウ	エ	オ	ン
 k	カ	キ	ク	ケ	コ
 ky	キャ		キュ		キョ

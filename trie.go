@@ -19,23 +19,23 @@ func (t *Trie) insert(letters, value string) {
 		Insert a value into the trie
 	*/
 
-	letters_rune := []rune(letters)
+	lettersRune := []rune(letters)
 
 	// loop through letters in argument word
-	for l, letter := range letters_rune {
+	for l, letter := range lettersRune {
 
-		letter_str := string(letter)
+		letterStr := string(letter)
 
 		// if letter in children
-		if t.children[letter_str] != nil {
-			t = t.children[letter_str]
+		if t.children[letterStr] != nil {
+			t = t.children[letterStr]
 		} else {
 			// not found, so add letter to children
-			t.children[letter_str] = &Trie{map[string]*Trie{}, "", []string{}}
-			t = t.children[letter_str]
+			t.children[letterStr] = &Trie{map[string]*Trie{}, "", []string{}}
+			t = t.children[letterStr]
 		}
 
-		if l == len(letters_rune)-1 {
+		if l == len(lettersRune)-1 {
 			// last letter, save value and exit
 			t.values = append(t.values, value)
 			break
@@ -50,17 +50,17 @@ func (t *Trie) search(srch string) (found []string) {
 		Returns the corresponding array of strings if found,
 		or an empty array otherwise.
 	*/
-	srch_rune := []rune(srch)
+	srchRune := []rune(srch)
 
-	for l, letter := range srch_rune {
-		letter_string := string(letter)
-		if t.children[letter_string] != nil {
-			t = t.children[letter_string]
+	for l, letter := range srchRune {
+		letterString := string(letter)
+		if t.children[letterString] != nil {
+			t = t.children[letterString]
 		} else {
 			found = []string{""}
 			return found
 		}
-		if l == len(srch_rune)-1 {
+		if l == len(srchRune)-1 {
 			found = t.values
 		}
 	}
@@ -75,31 +75,31 @@ func (t *Trie) convert(origin string) (result string) {
 		given point.
 	*/
 	root := t
-	origin_rune := []rune(origin)
+	originRune := []rune(origin)
 	result = ""
 
-	for l := 0; l < len(origin_rune); l++ {
+	for l := 0; l < len(originRune); l++ {
 		t = root
-		found_value := ""
+		foundVal := ""
 		depth := 0
-		for i := 0; i+l < len(origin_rune); i++ {
-			letter := string(origin_rune[l+i])
+		for i := 0; i+l < len(originRune); i++ {
+			letter := string(originRune[l+i])
 			if t.children[letter] == nil {
 				// not found
 				break
 			} else {
 				if len(t.children[letter].values) > 0 {
-					found_value = t.children[letter].values[0]
+					foundVal = t.children[letter].values[0]
 					depth = i
 				}
 				t = t.children[letter]
 			}
 		}
-		if found_value != "" {
-			result += found_value
+		if foundVal != "" {
+			result += foundVal
 			l += depth
 		} else {
-			result += string(origin_rune[l : l+1])
+			result += string(originRune[l : l+1])
 		}
 	}
 	return result

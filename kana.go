@@ -7,14 +7,16 @@ import (
 	"unicode/utf8"
 )
 
-var consonants = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
+var (
+	consonants = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
 
-var hiragana_re = regexp.MustCompile(`ん([あいうえおなにぬねの])`)
-var katakana_re = regexp.MustCompile(`ン([アイウエオナニヌネノ])`)
+	hiraganaRe = regexp.MustCompile(`ん([あいうえおなにぬねの])`)
+	katakanaRe = regexp.MustCompile(`ン([アイウエオナニヌネノ])`)
 
-var kanaToRomajiTrie *Trie
-var romajiToHiraganaTrie *Trie
-var romajiToKatakanaTrie *Trie
+	kanaToRomajiTrie     *Trie
+	romajiToHiraganaTrie *Trie
+	romajiToKatakanaTrie *Trie
+)
 
 func Initialize() {
 	/*
@@ -56,8 +58,8 @@ func Initialize() {
 func KanaToRomaji(kana string) (romaji string) {
 
 	// unfortunate hack to deal with double n's
-	romaji = hiragana_re.ReplaceAllString(kana, "nn$1")
-	romaji = katakana_re.ReplaceAllString(romaji, "nn$1")
+	romaji = hiraganaRe.ReplaceAllString(kana, "nn$1")
+	romaji = katakanaRe.ReplaceAllString(romaji, "nn$1")
 
 	romaji = kanaToRomajiTrie.convert(romaji)
 
