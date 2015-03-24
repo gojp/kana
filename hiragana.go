@@ -3,6 +3,7 @@ package kana
 // HiraganaTable maps romaji to hiragana
 var HiraganaTable = `	a	i	u	e	o	n
 	あ	い	う	え	お	ん
+x	ぁ	ぃ	ぅ	ぇ	ぉ
 k	か	き	く	け	こ
 ky	きゃ		きゅ		きょ
 s	さ		す	せ	そ

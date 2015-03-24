@@ -3,6 +3,7 @@ package kana
 // KatakanaTable maps romaji to katakana
 var KatakanaTable = `	a	i	u	e	o	n
 	ア	イ	ウ	エ	オ	ン
+x	ァ	ィ	ゥ	ェ	ォ
 k	カ	キ	ク	ケ	コ
 ky	キャ		キュ		キョ
 s	サ		ス	セ	ソ
