@@ -17,7 +17,7 @@ Usage
 
 To use *kana*, you'll have to import it:
 
-    import "github.com/hermanschaaf/kana"
+    import "github.com/gojp/kana"
     ...
     k := kana.NewKana()
 
