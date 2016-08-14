@@ -143,6 +143,14 @@ func IsKana(s string) bool {
 	return isChar(s, []*unicode.RangeTable{unicode.Hiragana, unicode.Katakana, unicode.Hyphen, unicode.Diacritic})
 }
 
+func IsHiragana(s string) bool {
+	return isChar(s, []*unicode.RangeTable{unicode.Hiragana, unicode.Hyphen, unicode.Diacritic})
+}
+
+func IsKatakana(s string) bool {
+	return isChar(s, []*unicode.RangeTable{unicode.Katakana, unicode.Hyphen, unicode.Diacritic})
+}
+
 func IsKanji(s string) bool {
 	return isChar(s, []*unicode.RangeTable{unicode.Ideographic})
 }

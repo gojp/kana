@@ -138,6 +138,34 @@ func TestIsKana(t *testing.T) {
 	}
 }
 
+var isHiraganaTests = []typeTest{
+	{"ばなな", true},
+	{"ファースト", false},
+	{"test", false},
+}
+
+func TestIsHiragana(t *testing.T) {
+	for _, tt := range isHiraganaTests {
+		if got := IsHiragana(tt.text); got != tt.valid {
+			t.Errorf("IsHiragana(%q) = %t, want %t", tt.text, got, tt.valid)
+		}
+	}
+}
+
+var isKatakanaTests = []typeTest{
+	{"ばなな", false},
+	{"ファースト", true},
+	{"test", false},
+}
+
+func TestIsKatakana(t *testing.T) {
+	for _, tt := range isKatakanaTests {
+		if got := IsKatakana(tt.text); got != tt.valid {
+			t.Errorf("IsKatakana(%q) = %t, want %t", tt.text, got, tt.valid)
+		}
+	}
+}
+
 var isKanjiTests = []typeTest{
 	{"ばなな", false},
 	{"ファースト", false},
