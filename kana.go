@@ -52,8 +52,8 @@ func Initialize() {
 	}
 }
 
+// KanaToRomaji converts a kana string to its romaji form
 func KanaToRomaji(kana string) (romaji string) {
-
 	// unfortunate hack to deal with double n's
 	romaji = hiraganaRe.ReplaceAllString(kana, "nn$1")
 	romaji = katakanaRe.ReplaceAllString(romaji, "nn$1")
@@ -108,6 +108,7 @@ func replaceNs(romaji string, n string) (result string) {
 	return result
 }
 
+// RomajiToHiragana converts a romaji string to its hiragana form
 func RomajiToHiragana(romaji string) (hiragana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
 	romaji = replaceTsus(romaji, "っ")
@@ -116,6 +117,7 @@ func RomajiToHiragana(romaji string) (hiragana string) {
 	return hiragana
 }
 
+// RomajiToKatakana converts a romaji string to its katakana form
 func RomajiToKatakana(romaji string) (katakana string) {
 	romaji = strings.Replace(romaji, "-", "ー", -1)
 	// convert double consonants to little tsus first
@@ -135,22 +137,27 @@ func isChar(s string, rangeTable []*unicode.RangeTable) bool {
 	return true
 }
 
+// IsLatin returns true if the string contains only Latin characters
 func IsLatin(s string) bool {
 	return isChar(s, []*unicode.RangeTable{unicode.Latin, unicode.ASCII_Hex_Digit, unicode.White_Space, unicode.Hyphen})
 }
 
+// IsKana returns true if the string contains only kana
 func IsKana(s string) bool {
 	return isChar(s, []*unicode.RangeTable{unicode.Hiragana, unicode.Katakana, unicode.Hyphen, unicode.Diacritic})
 }
 
+// IsHiragana returns true if the string contains only hiragana
 func IsHiragana(s string) bool {
 	return isChar(s, []*unicode.RangeTable{unicode.Hiragana, unicode.Hyphen, unicode.Diacritic})
 }
 
+// IsKatakana returns true if the string contains only katakana
 func IsKatakana(s string) bool {
 	return isChar(s, []*unicode.RangeTable{unicode.Katakana, unicode.Hyphen, unicode.Diacritic})
 }
 
+// IsKanji return strue if the string contains only kanji
 func IsKanji(s string) bool {
 	return isChar(s, []*unicode.RangeTable{unicode.Ideographic})
 }
@@ -163,12 +170,11 @@ func replaceAll(haystack string, needles []string, replacements []string) (repla
 	return replaced
 }
 
+// NormalizeRomaji transforms romaji input to one specific standard form,
+// which should be as close as possible to hiragana so that
+// this library gives correct output when transforming to
+// hiragana/katakana
 func NormalizeRomaji(s string) (romaji string) {
-	// transform romaji input to one specific standard form,
-	// which should be as close as possible to hiragana so that
-	// this library gives correct output when transforming to
-	// hiragana / katakana
-
 	romaji = s
 	romaji = strings.ToLower(romaji)
 	romaji = replaceAll(
