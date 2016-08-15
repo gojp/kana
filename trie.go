@@ -1,5 +1,6 @@
 package kana
 
+// Trie is a trie data structure
 type Trie struct {
 	children map[string]*Trie
 	letter   string
