@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	consonants = []string{"b", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
+	consonants = []string{"b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "p", "r", "s", "t", "w", "z"}
 
 	hiraganaRe = regexp.MustCompile(`ん([あいうえおなにぬねの])`)
 	katakanaRe = regexp.MustCompile(`ン([アイウエオナニヌネノ])`)

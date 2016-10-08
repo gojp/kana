@@ -90,7 +90,7 @@ var romajiToHiraganaTests = []kanaTest{
 	{"hannou", "はんおう"},
 	{"chuutohanpa", "ちゅうとはんぱ"},
 	{"ＣＤプレーヤー", "ＣＤプレーヤー"},
-	// {"meccha", "めっちゃ"},
+	{"meccha", "めっちゃ"},
 	{"che", "ちぇ"},
 }
 
