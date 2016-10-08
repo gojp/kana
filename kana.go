@@ -103,9 +103,7 @@ func replaceTsus(romaji string, tsu string) (result string) {
 }
 
 func replaceNs(romaji string, n string) (result string) {
-	result = romaji
-	result = strings.Replace(result, "nn", n, -1)
-	return result
+	return strings.Replace(romaji, "nn", n, -1)
 }
 
 // RomajiToHiragana converts a romaji string to its hiragana form
