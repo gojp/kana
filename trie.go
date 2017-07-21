@@ -38,28 +38,6 @@ func (t *Trie) insert(letters, value string) {
 	}
 }
 
-// Search for a string in the Trie.
-//
-// Returns the corresponding array of strings if found,
-// or an empty array otherwise.
-func (t *Trie) search(srch string) (found []string) {
-	srchRune := []rune(srch)
-
-	for l, letter := range srchRune {
-		letterString := string(letter)
-		if t.children[letterString] != nil {
-			t = t.children[letterString]
-		} else {
-			found = []string{""}
-			return found
-		}
-		if l == len(srchRune)-1 {
-			found = t.values
-		}
-	}
-	return found
-}
-
 // Convert a given string to the corresponding values
 // in the trie. This performed in a greedy fashion,
 // replacing the longest valid string it can find at any
