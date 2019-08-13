@@ -15,12 +15,6 @@ Simply install with `go get`:
 Usage
 -------
 
-To use *kana*, you'll have to import it:
-
-    import "github.com/gojp/kana"
-    ...
-    k := kana.NewKana()
-
 *kana* can do many things. It can convert hiragana or katakana to romaji:
 
     s := kana.KanaToRomaji("バナナ") // -> banana
