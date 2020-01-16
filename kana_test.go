@@ -68,6 +68,7 @@ var romajiToKatakanaTests = []kanaTest{
 	{"hyakumeootokage", "ヒャクメオオトカゲ"},
 	{"ＣＤプレーヤー", "ＣＤプレーヤー"},
 	{"cheri-", "チェリー"},
+	{"otukare", "オツカレ"},
 }
 
 func TestRomajiToKatakana(t *testing.T) {
@@ -96,6 +97,7 @@ var romajiToHiraganaTests = []kanaTest{
 	{"ＣＤプレーヤー", "ＣＤプレーヤー"},
 	{"meccha", "めっちゃ"},
 	{"che", "ちぇ"},
+	{"otukare", "おつかれ"},
 }
 
 func TestRomajiToHiragana(t *testing.T) {
